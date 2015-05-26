@@ -30,7 +30,7 @@ blogController.prototype = {
         }
 
         // Fetch new posts from GitHub
-        var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');
+        var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');        
 
         // Get all post titles from DB
         db.getPostTitles(function(err, results) {
@@ -96,7 +96,7 @@ blogController.prototype = {
                     templateFileContents = templateFileContents.replace('<!-- POST BODY -->', htmlPostBody);
 
                     // Create new HTML post file
-                    var fd = fs.openSync(config.blogPostPath + postTitle.replace(/\s+/g, '-') + '.html', 'a');
+                    var fd = fs.openSync(config.blogPath + postTitle.replace(/\s+/g, '-') + '.html', 'a');
                     fs.writeSync(fd, templateFileContents);
 
                     // Copy post image file
