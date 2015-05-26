@@ -46,62 +46,67 @@ blogController.prototype = {
             // Iterate through new md files and add to blog
             for (var i = 0; i < postsToAdd.length; i++) {
 
-                // Get file contents as string
-                var postFileContents = fs.readFileSync(config.mdBlogPath + postsToAdd[i], 'utf8');
+                // Encapsulate in function due to db callbacks within the loop
+                (function() {
 
-                // Split new post based on summary tag
-                var postPreview = postFileContents.split('<!--')[0];                  // Contents before summary tag
-                var postMeta = postFileContents.split('<!--')[1].split('--!>')[0];    // Contents within summary tag
+                    // Get file contents as string
+                    var postFileContents = fs.readFileSync(config.mdBlogPath + postsToAdd[i], 'utf8');
 
-                // Extract Metadata
-                postMeta = postMeta.replace(/(\r\n|\n|\r)/gm,'|');
-                var authorName = postMeta.split('|')[1].split('=')[1];
-                var imgName = postMeta.split('|')[2].split('=')[1];
-                var postTags = postMeta.split('|')[3].split('=')[1].split(",");
-                var postTitle = postsToAdd[i].split(".")[0].replace('-', ' ');
-                var postDate = getCurrentDate();
+                    // Split new post based on summary tag
+                    var postPreview = postFileContents.split('<!--')[0];                  // Contents before summary tag
+                    var postMeta = postFileContents.split('<!--')[1].split('--!>')[0];    // Contents within summary tag
 
-                // Convert post preview to HTML
-                var converter = new pagedown.getSanitizingConverter();
-                var htmlPreview = converter.makeHtml(postPreview);
+                    // Extract Metadata
+                    postMeta = postMeta.replace(/(\r\n|\n|\r)/gm,'|');
+                    var authorName = postMeta.split('|')[1].split('=')[1];
+                    var imgName = postMeta.split('|')[2].split('=')[1];
+                    var postTags = postMeta.split('|')[3].split('=')[1].split(",");
+                    var postTitle = postsToAdd[i].split(".")[0].replace('-', ' ');
+                    var postDate = getCurrentDate();
 
-                // Insert new post
-                db.addNewPost(authorName, postDate, imgName, postTitle, htmlPreview, function(err, results) {
-                    if (err) {
-                        res.send(500, 'Server Error.');
-                        return;
-                    }
+                    // Convert post preview to HTML
+                    var converter = new pagedown.getSanitizingConverter();
+                    var htmlPreview = converter.makeHtml(postPreview);
 
-                    // ------------- Create new post page ---------------- //
+                    // Insert new post
+                    db.addNewPost(authorName, postDate, imgName, postTitle, htmlPreview, function(err, results) {
+                        if (err) {
+                            res.send(500, 'Server Error.');
+                            return;
+                        }
 
-                    // Get template HTML file contents
-                    var templateFileContents = fs.readFileSync(__dirname + '/../../posts/post_template.html', 'utf8');
+                        // ------------- Create new post page ---------------- //
 
-                    // Insert post image path
-                    templateFileContents = templateFileContents.replace('<!-- POST IMAGE -->', '<img class="img-responsive" src="img/' + imgName + '" alt="">');
+                        // Get template HTML file contents
+                        var templateFileContents = fs.readFileSync(__dirname + '/../../posts/post_template.html', 'utf8');
 
-                    // Insert post title
-                    templateFileContents = templateFileContents.replace('<!-- POST TITLE -->', postTitle);
+                        // Insert post image path
+                        templateFileContents = templateFileContents.replace('<!-- POST IMAGE -->', '<img class="img-responsive" src="img/' + imgName + '" alt="">');
 
-                    // Insert post author
-                    templateFileContents = templateFileContents.replace('<!-- POST AUTHOR -->', authorName);
+                        // Insert post title
+                        templateFileContents = templateFileContents.replace('<!-- POST TITLE -->', postTitle);
 
-                    // Insert post date
-                    templateFileContents = templateFileContents.replace('<!-- POST DATE -->', postDate);
+                        // Insert post author
+                        templateFileContents = templateFileContents.replace('<!-- POST AUTHOR -->', authorName);
 
-                    // Convert post to HTML
-                    var htmlPostBody = converter.makeHtml(postFileContents);
+                        // Insert post date
+                        templateFileContents = templateFileContents.replace('<!-- POST DATE -->', postDate);
 
-                    // Insert HTML post body into post page
-                    templateFileContents = templateFileContents.replace('<!-- POST BODY -->', htmlPostBody);
+                        // Convert post to HTML
+                        var htmlPostBody = converter.makeHtml(postFileContents);
 
-                    // Create new HTML post file
-                    var fd = fs.openSync(config.blogPath + postTitle.replace(/\s+/g, '-') + '.html', 'a');
-                    fs.writeSync(fd, templateFileContents);
+                        // Insert HTML post body into post page
+                        templateFileContents = templateFileContents.replace('<!-- POST BODY -->', htmlPostBody);
 
-                    // Copy post image file
-                    var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPath + 'img/');
-                });
+                        // Create new HTML post file
+                        var fd = fs.openSync(config.blogPath + postTitle.replace(/\s+/g, '-') + '.html', 'a');
+                        fs.writeSync(fd, templateFileContents);
+
+                        // Copy post image file
+                        var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPath + 'img/');
+                    });
+
+                })();
 
             }
 
