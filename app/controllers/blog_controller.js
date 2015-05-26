@@ -19,14 +19,10 @@ blogController.prototype = {
     */
     updatePosts : function (req, res) {	
 
-        // Confirm that request was sent from GitHub
-        var signature = crypto.createHmac('sha1', config.githubSecret).update(JSON.stringify(req.body)).digest('hex');
-
-	console.log(signature);
+    // Confirm that request was sent from GitHub
+    var signature = crypto.createHmac('sha1', config.githubSecret).update(JSON.stringify(req.body)).digest('hex');
 
 	var githubSignature = req.headers['x-hub-signature'].split('=')[1];
-
-	console.log(githubSignature);
 
         if (!secureCompare(signature, githubSignature)) {
             res.send(500, 'Server Error');
@@ -43,7 +39,7 @@ blogController.prototype = {
                 return;
             }
 
-            var postFiles = fs.readdirSync(__dirname + '/../../posts/md');
+            var postFiles = fs.readdirSync(config.mdBlogPath);
 
             var postsToAdd = filterNewPosts(results, postFiles);
 
@@ -51,7 +47,7 @@ blogController.prototype = {
             for (var i = 0; i < postsToAdd.length; i++) {
 
                 // Get file contents as string
-                var postFileContents = fs.readFileSync(__dirname + '/../../posts/md/' + postsToAdd[i], 'utf8');
+                var postFileContents = fs.readFileSync(config.mdBlogPath + postsToAdd[i], 'utf8');
 
                 // Split new post based on summary tag
                 var postPreview = postFileContents.split('<!--')[0];                  // Contents before summary tag
@@ -104,7 +100,7 @@ blogController.prototype = {
                     fs.writeSync(fd, templateFileContents);
 
                     // Copy post image file
-                    var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPostPath + 'img/');                    
+                    var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPath + 'img/');
                 });
 
             }

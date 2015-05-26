@@ -12,6 +12,7 @@ config.dbPass = 'Bl0gU$3r';
 // Secret used to validate payload from GitHub
 config.githubSecret = 'NewBlogPost';
 
-config.blogPostPath = '/www/CantangoHome/blog/';
+config.blogPath = '/www/CantangoHome/blog/';
+config.mdBlogPath = '/www/Posts/md/';
 
 module.exports = config;
