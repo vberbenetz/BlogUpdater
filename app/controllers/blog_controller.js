@@ -4,7 +4,6 @@ var sh = require('shelljs');
 var fs = require('fs');
 var pagedown = require('pagedown');
 var crypto = require('crypto');
-var secureCompare = require('secure-compare');
 
 var blogController = function() {};
 
@@ -18,12 +17,18 @@ blogController.prototype = {
        5) Add new post to DB
        6) Create new post page
     */
-    updatePosts : function (req, res) {
+    updatePosts : function (req, res) {	
 
         // Confirm that request was sent from GitHub
-        var signature = crypto.createHmac('sha1', config.githubSecret).update(req.body).digest('hex');
+        var signature = crypto.createHmac('sha1', config.githubSecret).update(JSON.stringify(req.body)).digest('hex');
 
-        if (!secureCompare(signature, req.env['HTTP_X_HUB_SIGNATURE']).should.equal(true)) {
+	console.log(signature);
+
+	var githubSignature = req.headers['x-hub-signature'].split('=')[1];
+
+	console.log(githubSignature);
+
+        if (!secureCompare(signature, githubSignature)) {
             res.send(500, 'Server Error');
             return;
         }
@@ -99,13 +104,12 @@ blogController.prototype = {
                     fs.writeSync(fd, templateFileContents);
 
                     // Copy post image file
-                    var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPostPath + 'img/');
-
-                    res.send(req.body);
+                    var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPostPath + 'img/');                    
                 });
 
-
             }
+
+	    res.send(req.body);
 
         });
     }
@@ -158,3 +162,21 @@ function getCurrentDate() {
 
     return fullMonth[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear();
 }
+
+function secureCompare (s1, s2) {
+
+	if (s1.length !== s2.length) {
+		return false;
+	}
+	var result = 0;
+	for (var i = 0; i < s1.length; i++) {
+		result |= (s1.charCodeAt(i) ^ s2.charCodeAt(i));
+	}
+	
+	if (result === 0) {
+		return true;
+	}
+
+	return false;
+}
+
