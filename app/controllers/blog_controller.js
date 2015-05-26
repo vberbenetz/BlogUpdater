@@ -136,12 +136,11 @@ function filterNewPosts (existingTitles, listOfFiles) {
         }
 
         var currentFile = listOfFiles[i].toString().replace('-', ' ').split('.')[0];
-        
+
         var postExists = false;
 
         for (var j = 0; j < omitList.length; j++) {
             if (currentFile === omitList[j]) {
-                console.log(currentFile + '' + omitList[j]);
                 postExists = true;
             }
         }
