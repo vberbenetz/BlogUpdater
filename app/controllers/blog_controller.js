@@ -30,7 +30,7 @@ blogController.prototype = {
         }
 
         // Fetch new posts from GitHub
-        var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');        
+        var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');
 
         // Get all post titles from DB
         db.getPostTitles(function(err, results) {
@@ -124,15 +124,20 @@ function filterNewPosts (existingTitles, listOfFiles) {
     // Copy Array
     var postsToAdd = listOfFiles.slice(0);
 
+    // Get list of posts to ignore
+    var postsToIgnore = config.postsToIgnore.split(',');
+
+    var omitList = existingTitles.concat(postsToIgnore);
+
     // Remove posts from list which have already been added
-    for (var i = 0; i < existingTitles.length; i++) {
+    for (var i = 0; i < omitList.length; i++) {
 
-        existingTitles[i] = existingTitles[i].toString();
+        omitList[i] = omitList[i].toString();
 
-        existingTitles[i].replace(/\s+/g, '-');
+        omitList[i].replace(/\s+/g, '-');
 
         for (var j = 0; j < listOfFiles.length; j++) {
-            if (existingTitles[i] === listOfFiles[j].split('.')[0]) {
+            if (omitList[i] === listOfFiles[j].split('.')[0]) {
                 postsToAdd.splice(j, 1);
                 break;
             }
@@ -174,10 +179,6 @@ function secureCompare (s1, s2) {
 		result |= (s1.charCodeAt(i) ^ s2.charCodeAt(i));
 	}
 	
-	if (result === 0) {
-		return true;
-	}
-
-	return false;
+	return (result === 0);
 }
 

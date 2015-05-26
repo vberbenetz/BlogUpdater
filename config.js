@@ -13,6 +13,8 @@ config.dbPass = 'Bl0gU$3r';
 config.githubSecret = 'NewBlogPost';
 
 config.blogPath = '/www/CantangoHome/blog/';
-config.mdBlogPath = '/www/BlogUpdater/posts/md/';
+config.mdBlogPath = '/www/Posts/md/';
+
+config.postsToIgnore = 'Post Example,Post Test';
 
 module.exports = config;
