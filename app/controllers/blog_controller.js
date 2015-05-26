@@ -121,26 +121,34 @@ module.exports = new blogController();
 
 function filterNewPosts (existingTitles, listOfFiles) {
 
-    // Copy Array
-    var postsToAdd = listOfFiles.slice(0);
+    var postsToAdd = [];
 
     // Get list of posts to ignore
     var postsToIgnore = config.postsToIgnore.split(',');
 
     var omitList = existingTitles.concat(postsToIgnore);
 
-    // Remove posts from list which have already been added
-    for (var i = 0; i < omitList.length; i++) {
+    for (var i = 0; i < listOfFiles.length; i++) {
 
-        omitList[i] = omitList[i].toString();
+        listOfFiles[i] = listOfFiles.toString();
+        listOfFiles[i] = listOfFiles[i].replace('-', ' ');
 
-        omitList[i].replace(/\s+/g, '-');
+        // Skip temporary files
+        if (listOfFiles[i].indexOf("~") > 1) {
+            continue;
+        }
 
-        for (var j = 0; j < listOfFiles.length; j++) {
-            if (omitList[i] === listOfFiles[j].split('.')[0]) {
-                postsToAdd.splice(j, 1);
-                break;
+        var postExists = false;
+
+        for (var j = 0; j < omitList.length; j++) {
+            if (listOfFiles[i].split('.')[0] === omitList[j]) {
+                postExists = true;
             }
+        }
+
+        // Add post to list
+        if (!postExists) {
+            postsToAdd.push(listOfFiles[i].split('.')[0]);
         }
     }
 
