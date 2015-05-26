@@ -130,14 +130,13 @@ function filterNewPosts (existingTitles, listOfFiles) {
 
     for (var i = 0; i < listOfFiles.length; i++) {
 
-        var currentFile = listOfFiles[i].toString().replace('-', ' ').split('.')[0];
-        console.log('currentFile: ' + currentFile);
-
         // Skip temporary files
         if (listOfFiles[i].toString().indexOf("~") > -1) {
             continue;
         }
 
+        var currentFile = listOfFiles[i].toString().replace('-', ' ').split('.')[0];
+        
         var postExists = false;
 
         for (var j = 0; j < omitList.length; j++) {
@@ -149,7 +148,7 @@ function filterNewPosts (existingTitles, listOfFiles) {
 
         // Add post to list
         if (!postExists) {
-            postsToAdd.push(currentFile);
+            postsToAdd.push(listOfFiles[i]);
         }
     }
 
