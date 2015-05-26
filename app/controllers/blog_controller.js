@@ -3,6 +3,8 @@ var db = require('../utils/database');
 var sh = require('shelljs');
 var fs = require('fs');
 var pagedown = require('pagedown');
+var crypto = require('crypto');
+var secureCompare = require('secure-compare');
 
 var blogController = function() {};
 
@@ -17,6 +19,14 @@ blogController.prototype = {
        6) Create new post page
     */
     updatePosts : function (req, res) {
+
+        // Confirm that request was sent from GitHub
+        var signature = crypto.createHmac('sha1', config.githubSecret).update(req.body).digest('hex');
+
+        if (!secureCompare(signature, req.env['HTTP_X_HUB_SIGNATURE']).should.equal(true)) {
+            res.send(500, 'Server Error');
+            return;
+        }
 
         // Fetch new posts from GitHub
         var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');
