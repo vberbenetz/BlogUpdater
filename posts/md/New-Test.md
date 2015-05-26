@@ -3,6 +3,12 @@
 ## Overview
 This project is building using Java Spring 4.1 Framework connecting to a SQL database (currently MySQL), along with AngularJS 1.3 for embedding dynamic responsive content into the front-end.
 
+<!--
+author=test
+img=5.jpg
+tags=test,post
+-->
+
 ## Minimum System Requirements
 
 This project has been tested and working stable on a Linux Virtual Private Server (VPS) with 1 Intel Xeon 2.0GHz CPU,  1024MB memory, and 1GB harddrive swap (recommended 1.5GB memory or more to not rely on swap), and only has a footprint of 60MBs (database and application) currently.
@@ -10,12 +16,6 @@ This project has been tested and working stable on a Linux Virtual Private Serve
 This has been verified to compile and run on a Windows server as well. If running on a Windows server, the above specs should be increased slightly as a Windows environment requires more resources.
 
 The application is currently configured to run on a MySQL database, but the connector library (according to the spec) is capable of running on SQL Server. Testing and configuration have been added to a future phase.
-
-<!--
-author=test
-img=4.jpg
-tags=test,post
--->
 
 ## Preliminary Setup and Configuration
 
