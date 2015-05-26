@@ -1,2 +1,2 @@
 # BlogUpdater
-BlogUpdater.
+BlogUpdater
