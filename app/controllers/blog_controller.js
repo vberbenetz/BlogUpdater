@@ -103,7 +103,7 @@ blogController.prototype = {
                         fs.writeSync(fd, templateFileContents);
 
                         // Copy post image file
-                        var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPath + 'img/');
+                        var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPath + 'blog_imgs/');
                     });
 
                 })();
