@@ -29,7 +29,7 @@ java -v
 
 Install MySQL Server and create the "aerocanada" database. Once created, import the database contained in the project archive under <PROJECT_ROOT>/database_setup.
 
-The database configuration is done via Java Beans and is found in src\main\java\com\cantango\AppConfiguration.java.
+The database configuration is done via Java Beans and is found in src\main\java\com\cantango\AppConfiguration.java
 By default it is configured to connect to a MySQL database running on the same server (listening on localhost) at the defaul 3306 port. It is currently configured to use the default root:root credentials to login. All these parameters can be configured via the DataSource class in this file prior to compilation.
 
 ---
