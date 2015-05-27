@@ -16,9 +16,9 @@ config.githubSecret = 'NewBlogPost';
 config.srcRoot = '/www/Posts/';
 config.srcImgsDir = 'img/';
 config.srcPostsDir = 'md/';
-config.destRoot = '/www/CantangoHome/public/';
-config.destImgsDir = 'blog/blog_imgs/';
-config.destPostsDir = 'blog/blog_posts/';
+config.destRoot = '/www/CantangoHome/public/blog/';
+config.destImgsDir = 'blog_imgs/';
+config.destPostsDir = 'blog_posts/';
 
 config.postsToIgnore = 'Post Example,Post Test';
 

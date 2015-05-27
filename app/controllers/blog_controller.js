@@ -80,22 +80,22 @@ blogController.prototype = {
                         var templateFileContents = fs.readFileSync(__dirname + '/../../post_template.html', 'utf8');
 
                         // Insert post image path
-                        templateFileContents = templateFileContents.replace('<!-- POST IMAGE -->', '<img class="img-responsive" src="' + config.destImgsDir + imgName + '" alt="">');
+                        templateFileContents = templateFileContents.replace(/<!-- POST IMAGE -->/g, '<img class="img-responsive" src="./' + config.destImgsDir + imgName + '">');
 
                         // Insert post title
-                        templateFileContents = templateFileContents.replace('<!-- POST TITLE -->', postTitle);
+                        templateFileContents = templateFileContents.replace(/<!-- POST TITLE -->/g, postTitle);
 
                         // Insert post author
-                        templateFileContents = templateFileContents.replace('<!-- POST AUTHOR -->', authorName);
+                        templateFileContents = templateFileContents.replace(/<!-- POST AUTHOR -->/g, authorName);
 
                         // Insert post date
-                        templateFileContents = templateFileContents.replace('<!-- POST DATE -->', postDate);
+                        templateFileContents = templateFileContents.replace(/<!-- POST DATE -->/g, postDate);
 
                         // Convert post to HTML
                         var htmlPostBody = converter.makeHtml(postFileContents);
 
                         // Insert HTML post body into post page
-                        templateFileContents = templateFileContents.replace('<!-- POST BODY -->', htmlPostBody);
+                        templateFileContents = templateFileContents.replace(/<!-- POST BODY -->/g, htmlPostBody);
 
                         // Create new HTML post file
                         var fd = fs.openSync(config.destRoot + config.destPostsDir + postTitle.replace(/\s+/g, '-') + '.html', 'a');
