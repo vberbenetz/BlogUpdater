@@ -61,7 +61,7 @@ blogController.prototype = {
                     var authorName = postMeta.split('|')[1].split('=')[1];
                     var imgName = postMeta.split('|')[2].split('=')[1];
                     var postTags = postMeta.split('|')[3].split('=')[1].split(",");
-                    var postTitle = postsToAdd[i].split(".")[0].replace('-', ' ');
+                    var postTitle = postsToAdd[i].split(".")[0].replace('/-/g', ' ');
                     var postDate = getCurrentDate();
 
                     // Convert post preview to HTML
@@ -135,7 +135,7 @@ function filterNewPosts (existingTitles, listOfFiles) {
             continue;
         }
 
-        var currentFile = listOfFiles[i].toString().replace('-', ' ').split('.')[0];
+        var currentFile = listOfFiles[i].toString().replace('/-/g', ' ').split('.')[0];
 
         var postExists = false;
 
