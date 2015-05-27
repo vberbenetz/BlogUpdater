@@ -18,7 +18,7 @@ blogController.prototype = {
        6) Create new post page
     */
     updatePosts : function (req, res) {	
-/*
+
         // Confirm that request was sent from GitHub
         var signature = crypto.createHmac('sha1', config.githubSecret).update(JSON.stringify(req.body)).digest('hex');
 
@@ -31,7 +31,7 @@ blogController.prototype = {
 
         // Fetch new posts from GitHub
         var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');
-*/
+
         // Get all post titles from DB
         db.getPostTitles(function(err, results) {
             if (err) {
