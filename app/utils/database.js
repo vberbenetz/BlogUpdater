@@ -64,6 +64,9 @@ exports.addNewPost = function(authorName, postDate, imgname, title, preview, cal
             // Release connection
             connection.release();
 
+            console.log(authorId);
+            console.log(authorName);
+
             if (err) {
                 console.log(err);
                 callback(true);
