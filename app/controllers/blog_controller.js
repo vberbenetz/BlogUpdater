@@ -39,7 +39,7 @@ blogController.prototype = {
                 return;
             }
 
-            var postFiles = fs.readdirSync(config.mdBlogPath);
+            var postFiles = fs.readdirSync(config.srcRoot + config.srcPostsDir);
 
             var postsToAdd = filterNewPosts(results, postFiles);
 
@@ -50,7 +50,7 @@ blogController.prototype = {
                 (function() {
 
                     // Get file contents as string
-                    var postFileContents = fs.readFileSync(config.mdBlogPath + postsToAdd[i], 'utf8');
+                    var postFileContents = fs.readFileSync(config.srcRoot + config.srcPostsDir + postsToAdd[i], 'utf8');
 
                     // Split new post based on summary tag
                     var postPreview = postFileContents.split('<!--')[0];                  // Contents before summary tag
@@ -78,10 +78,10 @@ blogController.prototype = {
                         // ------------- Create new post page ---------------- //
 
                         // Get template HTML file contents
-                        var templateFileContents = fs.readFileSync(__dirname + '/../../posts/post_template.html', 'utf8');
+                        var templateFileContents = fs.readFileSync(__dirname + '/../../post_template.html', 'utf8');
 
                         // Insert post image path
-                        templateFileContents = templateFileContents.replace('<!-- POST IMAGE -->', '<img class="img-responsive" src="img/' + imgName + '" alt="">');
+                        templateFileContents = templateFileContents.replace('<!-- POST IMAGE -->', '<img class="img-responsive" src="' + config.destImgsDir + imgName + '" alt="">');
 
                         // Insert post title
                         templateFileContents = templateFileContents.replace('<!-- POST TITLE -->', postTitle);
@@ -99,11 +99,11 @@ blogController.prototype = {
                         templateFileContents = templateFileContents.replace('<!-- POST BODY -->', htmlPostBody);
 
                         // Create new HTML post file
-                        var fd = fs.openSync(config.blogPath + postTitle.replace(/\s+/g, '-') + '.html', 'a');
+                        var fd = fs.openSync(config.destRoot + config.destPostsDir + postTitle.replace(/\s+/g, '-') + '.html', 'a');
                         fs.writeSync(fd, templateFileContents);
 
                         // Copy post image file
-                        var copyImg = sh.exec('cp ' + __dirname + '/../../posts/img/' + imgName + ' ' + config.blogPath + 'blog_imgs/');
+                        var copyImg = sh.exec('cp ' + config.srcRoot + config.srcImgsDir + imgName + ' ' + config.destRoot + config.destImgsDir);
                     });
 
                 })();
