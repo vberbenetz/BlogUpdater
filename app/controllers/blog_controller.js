@@ -54,7 +54,7 @@ blogController.prototype = {
 
                     // Split new post based on summary tag
                     var postPreview = postFileContents.split('<!--')[0];                  // Contents before summary tag
-                    var postMeta = postFileContents.split('<!--')[1].split('--!>')[0];    // Contents within summary tag
+                    var postMeta = postFileContents.split('<!--')[1].split('-->')[0];    // Contents within summary tag
 
                     // Extract Metadata
                     postMeta = postMeta.replace(/(\r\n|\n|\r)/gm,'|');
