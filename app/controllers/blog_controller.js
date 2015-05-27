@@ -64,7 +64,7 @@ blogController.prototype = {
                     var postDate = getCurrentDate();
 
                     // Convert post preview to HTML
-                    var converter = new pagedown.getSanitizingConverter();
+                    var converter = new pagedown.Converter();
                     var htmlPreview = converter.makeHtml(postPreview);
 
                     // Insert new post
