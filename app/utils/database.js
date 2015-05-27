@@ -64,9 +64,6 @@ exports.addNewPost = function(authorName, postDate, imgname, title, preview, cal
             // Release connection
             connection.release();
 
-            console.log(authorId);
-            console.log(authorName);
-
             if (err) {
                 console.log(err);
                 callback(true);
@@ -82,7 +79,7 @@ exports.addNewPost = function(authorName, postDate, imgname, title, preview, cal
                     return;
                 }
 
-                connection.query(newPostQuery, [postDate, authorId, imgname, title, preview],
+                connection.query(newPostQuery, [postDate, authorId[0].id, imgname, title, preview],
                     function (err, results) {
 
                         // Release connection

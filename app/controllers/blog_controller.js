@@ -18,11 +18,11 @@ blogController.prototype = {
        6) Create new post page
     */
     updatePosts : function (req, res) {	
+/*
+        // Confirm that request was sent from GitHub
+        var signature = crypto.createHmac('sha1', config.githubSecret).update(JSON.stringify(req.body)).digest('hex');
 
-    // Confirm that request was sent from GitHub
-    var signature = crypto.createHmac('sha1', config.githubSecret).update(JSON.stringify(req.body)).digest('hex');
-
-	var githubSignature = req.headers['x-hub-signature'].split('=')[1];
+	    var githubSignature = req.headers['x-hub-signature'].split('=')[1];
 
         if (!secureCompare(signature, githubSignature)) {
             res.send(500, 'Server Error');
@@ -31,7 +31,7 @@ blogController.prototype = {
 
         // Fetch new posts from GitHub
         var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');
-
+*/
         // Get all post titles from DB
         db.getPostTitles(function(err, results) {
             if (err) {
@@ -57,11 +57,10 @@ blogController.prototype = {
                     var postMeta = postFileContents.split('<!--')[1].split('-->')[0];    // Contents within summary tag
 
                     // Extract Metadata
-                    postMeta = postMeta.replace(/(\r\n|\n|\r)/gm,'|');
-                    var authorName = postMeta.split('|')[1].split('=')[1];
-                    var imgName = postMeta.split('|')[2].split('=')[1];
-                    var postTags = postMeta.split('|')[3].split('=')[1].split(",");
-                    var postTitle = postsToAdd[i].split(".")[0].replace('/-/g', ' ');
+                    var authorName = postMeta.split('|')[0].split('=')[1];
+                    var imgName = postMeta.split('|')[1].split('=')[1];
+                    var postTags = postMeta.split('|')[2].split('=')[1].split(",");
+                    var postTitle = postsToAdd[i].split(".")[0].replace(/-/g, ' ');
                     var postDate = getCurrentDate();
 
                     // Convert post preview to HTML
@@ -135,7 +134,7 @@ function filterNewPosts (existingTitles, listOfFiles) {
             continue;
         }
 
-        var currentFile = listOfFiles[i].toString().replace('/-/g', ' ').split('.')[0];
+        var currentFile = listOfFiles[i].toString().replace(/-/g, ' ').split('.')[0];
 
         var postExists = false;
 
