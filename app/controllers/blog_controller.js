@@ -29,7 +29,13 @@ blogController.prototype = {
             return;
         }
 
-        // Fetch new posts from GitHub
+        var gitAdded = filterMd(req.body.head_commit.added);
+        var gitRemoved = filterMd(req.body.head_commit.removed);
+        var gitModified = filterMd(req.body.head_commit.modified);
+
+
+
+        // Update Posts from Github
         var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');
 
         // Get all post titles from DB
@@ -117,6 +123,22 @@ blogController.prototype = {
 };
 
 module.exports = new blogController();
+
+// Remove all file updates apart from .md files
+function filterMd (listOfFiles) {
+
+    for (var i = 0; i < listOfFiles.length; i++) {
+
+        var fileExtension = listOfFiles[i].substring(listOfFiles.lastIndexOf("."));
+
+        console.log(fileExtension);
+
+        if (fileExtension != 'md') {
+            listOfFiles.splice(i, 1);
+            i--;
+        }
+    }
+}
 
 function filterNewPosts (existingTitles, listOfFiles) {
 
