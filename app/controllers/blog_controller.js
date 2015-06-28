@@ -33,7 +33,7 @@ blogController.prototype = {
         var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');
 
         var commits = req.body.commits;
-        var gitAdded, gitRemoved, gitModified;
+        var gitAdded = [], gitRemoved = [], gitModified = [];
 
         // Get all added
         for (var i = 0; i < commits.length; i++) {
@@ -43,15 +43,7 @@ blogController.prototype = {
                 continue;
             }
 
-            for (var j = 0; j < commits[i].added.length; j++) {
-
-                var thisAdded = filterMd(commits[i].added[j]);
-
-                // New addition
-                if (gitAdded.indexOf(thisAdded) > -1) {
-                    gitAdded.push(thisAdded);
-                }
-            }
+            gitAdded = filterMd(commits[i].added);
         }
 
         // Get all removed
@@ -62,15 +54,7 @@ blogController.prototype = {
                 continue;
             }
 
-            for (var j = 0; j < commits[i].removed.length; j++) {
-
-                var thisRemoved = filterMd(commits[i].removed[j]);
-
-                // New addition
-                if (gitRemoved.indexOf(thisRemoved) > -1) {
-                    gitRemoved.push(thisRemoved);
-                }
-            }
+            gitRemoved = filterMd(commits[i].removed);
         }
 
         // Get all modified
@@ -81,15 +65,7 @@ blogController.prototype = {
                 continue;
             }
 
-            for (var j = 0; j < commits[i].modified.length; j++) {
-
-                var thisModified = filterMd(commits[i].modified[j]);
-
-                // New addition
-                if (gitModified.indexOf(thisModified) > -1) {
-                    gitModified.push(thisModified);
-                }
-            }
+            gitModified = filterMd(commits[i].modified);
         }
 
 
