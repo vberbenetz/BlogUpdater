@@ -1,6 +1,6 @@
 var config = require('../../config');
 var db = require('../utils/database');
-var sh = require('shelljs');
+var sh = require('exec-sync');
 var fs = require('fs');
 var pagedown = require('pagedown');
 var crypto = require('crypto');
