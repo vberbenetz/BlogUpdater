@@ -68,7 +68,7 @@ blogController.prototype = {
             gitModified = filterMd(commits[i].modified);
         }
 
-
+/*
         // Remove posts
         for (var i = 0; i < gitRemoved.length; i++) {
 
@@ -94,7 +94,7 @@ blogController.prototype = {
             })();
 
         }
-
+*/
 
         var postsToAdd = gitAdded;
 
