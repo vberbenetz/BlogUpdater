@@ -96,7 +96,7 @@ blogController.prototype = {
         }
 
 
-        var postsToAdd = gitAdded.concat(gitModified);
+        var postsToAdd = gitAdded;
 
         // Iterate through new md files and add to blog
         for (var i = 0; i < postsToAdd.length; i++) {
