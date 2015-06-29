@@ -176,6 +176,12 @@ blogController.prototype = {
 
 	    res.send(req.body);
 
+        // Wait for all posts to generate themselves
+        setTimeout(function() {
+            // Update CantangoHome with new posts
+            var execute = sh.exec(__dirname + '/../../scripts/./commit_post.sh');
+        }, 5000);
+
     }
 
 };
