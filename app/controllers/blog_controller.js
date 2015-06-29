@@ -1,6 +1,6 @@
 var config = require('../../config');
 var db = require('../utils/database');
-var sh = require('exec-sync');
+var exec = require('sync-exec');
 var fs = require('fs');
 var pagedown = require('pagedown');
 var crypto = require('crypto');
@@ -30,7 +30,7 @@ blogController.prototype = {
         }
 
         // Update Posts from Github
-        var execute = sh.exec(__dirname + '/../../scripts/./fetch_posts.sh');
+        var execute = exec(__dirname + '/../../scripts/./fetch_posts.sh');
 
         var commits = req.body.commits;
         var gitAdded = [], gitRemoved = [], gitModified = [];
@@ -179,7 +179,7 @@ blogController.prototype = {
         // Wait for all posts to generate themselves
         setTimeout(function() {
             // Update CantangoHome with new posts
-            var execute = sh.exec(__dirname + '/../../scripts/./commit_post.sh');
+            var execute = exec(__dirname + '/../../scripts/./commit_post.sh');
         }, 5000);
 
     }
