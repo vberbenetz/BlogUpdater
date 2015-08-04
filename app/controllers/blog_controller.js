@@ -121,6 +121,10 @@ blogController.prototype = {
                 try {
                     category = postMeta.split('|')[3].split('=')[1];
                 }
+                catch (e) {
+                    // No category tag
+                    console.log(e);
+                }
 
                 var postTitle = postsToAdd[i].split(".")[0].replace(/-/g, ' ');
                 var postDate = getCurrentDate();
