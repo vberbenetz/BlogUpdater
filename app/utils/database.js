@@ -47,7 +47,7 @@ exports.addNewPost = function(authorName, postDate, imgname, title, category, pr
         'WHERE name = ?';
 
     var newPostQuery =
-        'INSERT INTO Posts (datetime, authorId, imgname, title, category, preview) ' +
+        'INSERT INTO Posts (datetime, authorId, imgname, title, preview, category) ' +
         'VALUES (?, ?, ?, ?, ?, ?)';
 
     pool.getConnection(function(err, connection) {
@@ -79,7 +79,7 @@ exports.addNewPost = function(authorName, postDate, imgname, title, category, pr
                     return;
                 }
 
-                connection.query(newPostQuery, [postDate, authorId[0].id, imgname, title, preview],
+                connection.query(newPostQuery, [postDate, authorId[0].id, imgname, title, preview, category],
                     function (err, results) {
 
                         // Release connection
