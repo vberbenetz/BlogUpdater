@@ -39,7 +39,7 @@ exports.getPostTitles = function(callback) {
     });
 };
 
-exports.addNewPost = function(authorName, postDate, imgname, title, preview, callback) {
+exports.addNewPost = function(authorName, postDate, imgname, title, category, preview, callback) {
 
     var getAuthorIdQuery =
         'SELECT id ' +
@@ -47,8 +47,8 @@ exports.addNewPost = function(authorName, postDate, imgname, title, preview, cal
         'WHERE name = ?';
 
     var newPostQuery =
-        'INSERT INTO Posts (datetime, authorId, imgname, title, preview) ' +
-        'VALUES (?, ?, ?, ?, ?)';
+        'INSERT INTO Posts (datetime, authorId, imgname, title, category, preview) ' +
+        'VALUES (?, ?, ?, ?, ?, ?)';
 
     pool.getConnection(function(err, connection) {
 

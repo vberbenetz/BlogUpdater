@@ -115,6 +115,13 @@ blogController.prototype = {
                 var authorName = postMeta.split('|')[0].split('=')[1];
                 var imgName = postMeta.split('|')[1].split('=')[1];
                 var postTags = postMeta.split('|')[2].split('=')[1].split(",");
+
+                // Extract blogtype metadata if it exists
+                var category = 'blog';
+                try {
+                    category = postMeta.split('|')[3].split('=')[1];
+                }
+
                 var postTitle = postsToAdd[i].split(".")[0].replace(/-/g, ' ');
                 var postDate = getCurrentDate();
 
@@ -123,7 +130,7 @@ blogController.prototype = {
                 var htmlPreview = converter.makeHtml(postPreview);
 
                 // Insert new post
-                db.addNewPost(authorName, postDate, imgName, postTitle, htmlPreview, function(err, results) {
+                db.addNewPost(authorName, postDate, imgName, postTitle, category, htmlPreview, function(err, results) {
                     if (err) {
                         res.send(500, 'Server Error.');
                         return;
