@@ -117,15 +117,17 @@ blogController.prototype = {
 
                 // Extract blogtype metadata if it exists
                 var category = 'blog';
+                var postTags;
                 try {
+                    postTags = postMeta.split('|')[3].split('=')[1].split(",");
                     category = postMeta.split('|')[2].split('=')[1];
                 }
                 catch (e) {
                     // No category tag
                     console.log(e);
+                    postTags = postMeta.split('|')[2].split('=')[1].split(",");
                 }
 
-                var postTags = postMeta.split('|')[3].split('=')[1].split(",");
                 var postTitle = postsToAdd[i].split(".")[0].replace(/-/g, ' ');
                 var postDate = getCurrentDate();
 
